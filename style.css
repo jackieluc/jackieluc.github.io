@@ -43,18 +43,22 @@ nav > a:hover {
     padding: 0;
     overflow: hidden;
     background-color: #333;
+    height: 3.1em;
 }
 
 .nav li {
     float: left;
+    height: 3.1em;
 }
 
 .nav li a {
-    display: block;
+    display: table-cell;
+    vertical-align: middle;
     color: white;
     text-align: center;
-    padding: 14px 16px;
+    padding: 0 1.5em;
     text-decoration: none;
+    height: 3.1em;
 }
 
 .nav li a:hover {
