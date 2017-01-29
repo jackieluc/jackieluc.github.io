@@ -7,6 +7,13 @@ body {
     font-family: 'Droid Sans', sans-serif;
 }
 
+header {
+    text-align: center;
+    background-color: aqua;
+    padding: 2em;
+    
+}
+
 /*
 nav {
     position: fixed;
@@ -51,6 +58,10 @@ nav > a:hover {
 }
 
 .nav li a:hover {
+    background-color: #111;
+}
+
+.nav li .active {
     background-color: #111;
 }
 
