@@ -15,6 +15,12 @@ header {
     margin: 0 auto;
 }
 
+main {
+    width: 75%;
+    margin: 0 auto;
+    margin-bottom: 100px;
+}
+
 p {
     text-align: center;
 }
@@ -57,9 +63,22 @@ p {
     float: left;
 }
 
-.container {
-    width: 75%;
-    margin: 0 auto;
+.definition {
+    padding: 0 5em;
+}
+
+.intro-table {
+    margin: 2em auto;
+}
+
+.source-table {
+    margin: 3em auto;
+    width: 50%;
+}
+
+.source-table td {
+    padding: 0.5em 1em;
+    width: 50%;
 }
 
 .video iframe {
@@ -71,8 +90,6 @@ p {
 }
 
 .am-table {
-    width: 75%;
-    margin: 0 auto;
     text-align: center;
     border-collapse: collapse;
     background-color: aliceblue;
