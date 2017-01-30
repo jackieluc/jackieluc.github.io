@@ -139,9 +139,12 @@ p {
 }
 
 .retailer {
-    width: 100%;
     text-align: center;
     margin: 4em auto;
+}
+
+.retailer img {
+    width: 100%;
 }
 
 .reference-list {
