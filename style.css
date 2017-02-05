@@ -3,159 +3,25 @@ html {
 }
 
 body {
-    font-size: medium;
     font-family: 'Droid Sans', sans-serif;
 }
 
-header {
+h1 {
     text-align: center;
-    background-color: #eeeeee;
-    padding: 2em;
-    width: 75%;
-    margin: 0 auto;
-}
-
-main {
-    width: 75%;
-    margin: 0 auto;
-    margin-bottom: 100px;
-}
-
-p {
-    text-align: center;
-}
-
-.nav {
-    list-style-type: none;
-    margin: 0;
-    padding: 0;
-    overflow: hidden;
-    background-color: #333;
-    height: 3.1em;
-}
-
-.nav li {
-    float: left;
-    height: 3.1em;
-}
-
-.nav li a {
-    display: table-cell;
-    vertical-align: middle;
-    color: white;
-    text-align: center;
-    padding: 0 1.5em;
-    text-decoration: none;
-    height: 3.1em;
-}
-
-.nav li a:hover {
-    background-color: #111111;
-}
-
-.nav li .active {
-    background-color: #111111;
-}
-
-#logo {
-    width: 8%;
-    vertical-align: middle;
-    float: left;
-}
-
-.definition {
-    padding: 0 5em;
-}
-
-.intro-table {
-    margin: 2em auto;
-}
-
-.source-table {
-    margin: 3em auto;
-    width: 50%;
-}
-
-.source-table td {
-    padding: 0.5em 1em;
-    width: 50%;
-}
-
-.video iframe {
-    display: block;
-    margin: 3em auto;
-    text-align: center;
-    width: 60%;
-    min-height: 420px;
-}
-
-.am-table {
-    text-align: center;
-    border-collapse: collapse;
-    background-color: aliceblue;
-}
-
-.am-table th {
-    font-size: 1.2em;   
-    background-color: #272E36;
-    padding: 1em;
-    color: white;
-}
-
-.table-header {
     font-weight: bold;
-    background-color: #344756;
-    color: white;
 }
 
-.table-caption p{
-    width: 75%;
-    margin: 0 auto;
+header {
+    margin: 5em 0;
 }
 
-.am-table td {    
-    padding: 1em 0;
-}
-
-.am-table td img {
-    width: 100%;
-}
-
-.am-table td:nth-child(4) {
-    color: #90EE90;
-}
-
-.am-table td:nth-child(5) {
-    color: #FF8888;
-}
-
-.influencers td {
-    padding-top: 3em;
-}
-
-.influencers td img {
-    width: 100%;
+.assignment-list {
     text-align: center;
-}
-
-.retailer {
-    text-align: center;
-    margin: 4em auto;
-}
-
-.retailer img {
-    width: 100%;
-}
-
-.reference-list {
     display: block;
     list-style-type: none;
-    margin: 2em 4em;
-    padding: 0;
-    overflow: hidden;
-    font-size: 1.3em;
+    font-size: 1.5em;
 }
 
-.reference-list li {
-    padding: 1em 0;
+.assignment-list li {
+    padding: 1.2em 0;
 }
