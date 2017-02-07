@@ -9,7 +9,7 @@ function isAlphanumeric(str) {
 
 /**
  * @param txt - some block of text
- * @return the split text on anything that is not alphanumeric
+ * @return an array of words converted to lowercase letters
 */
 function getWords(txt) {
     // removes the apostrophes to ensure that any word with apostrophes is considered one word
@@ -17,7 +17,14 @@ function getWords(txt) {
         txt = txt.replace("'", "");
     
     // RegEx - everything that is not alphanumeric
-    return txt.split(/\W/);
+    let words = txt.split(/\W/);
+    
+    // convert to lowercase letters
+    words.forEach( function(val, index, words) {
+        words[index] = val.toLowerCase();
+    });
+    
+    return words;
 }
 
 /**
@@ -134,15 +141,13 @@ function getAllPalindromes(txt) {
     words.forEach( function(val, index, words) {
         // only consider words with more than 2 characters
         if (val.length > 2) {
-            
-            let lowerCase = val.toLowerCase();
-            
+
             // it is a palindrome if the word reads the same forwards and backwards
-            if (lowerCase === reverseWord(lowerCase)) {
+            if (val === reverseWord(val)) {
                 
                 // add to palindromes array only if it is unique
-                if (!palindromes.includes(lowerCase))
-                    palindromes.push(lowerCase);
+                if (!palindromes.includes(val))
+                    palindromes.push(val);
             }
         }
     });
@@ -197,6 +202,6 @@ function getStats(txt) {
         maxLineLength: getMaxLineLength(txt),
         allPalindromes: getAllPalindromes(txt),
         tenLongestWords: getTenLongestWords(txt),
-        tenMostFrequentWords: ["a", "this", "the"]
+        tenMostFrequentWords: getTenMostFrequentWords(txt)
     };
 }
