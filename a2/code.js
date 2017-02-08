@@ -195,26 +195,25 @@ function getTenMostFrequentWords(txt) {
     let sorted = [];
     let mostFrequent = [];
 
-
     words.forEach( function(word) {
 
         // we do not care if the word is an empty string
         if (word !== "") {
 
-
+            // if the word's frequency has yet be counted, start off at 1
             if (!count[word]) {
                 count[word] = 1;
-                sorted.push(word + "/1");
+                sorted.push(word + "(1");
             }
+            // find the word in the array and increment it's frequency by 1
             else {
                 count[word] += 1;
 
                 for (let i = 0; i < sorted.length; i++) {
-                    let rawVal = sorted[i].substring(0, sorted[i].indexOf("/"));
+                    let rawVal = sorted[i].split("(")[0];
 
-                    if (rawVal === word) {
-                        sorted[i] = rawVal + "/" + count[word];
-                    }
+                    if (rawVal === word)
+                        sorted[i] = rawVal + "(" + count[word];
                 }
             }
         }
@@ -225,8 +224,8 @@ function getTenMostFrequentWords(txt) {
     sorted.sort( function(firstWord, secondWord) {
 
         // get the frequency in integer format
-        let firstFreq = parseInt(firstWord.split("/")[1]);
-        let secondFreq = parseInt(secondWord.split("/")[1])
+        let firstFreq = parseInt(firstWord.split("(")[1]);
+        let secondFreq = parseInt(secondWord.split("(")[1])
 
         return secondFreq - firstFreq || firstWord.localeCompare(secondWord);
     });
@@ -236,8 +235,7 @@ function getTenMostFrequentWords(txt) {
 
     // for each word and their frequency, we update the formatting to: value(someNumber) as required from the assignment
     mostFrequent.forEach( function(val, index, mostFrequent) {
-        let splitted = val.split("/");
-        mostFrequent[index] = splitted[0] + "(" + splitted[1] + ")";
+        mostFrequent[index] = val + ")";
     });
 
     return mostFrequent;
