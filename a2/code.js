@@ -207,7 +207,7 @@ function getTenMostFrequentWords(txt) {
             }
             // find the word in the array and increment it's frequency by 1
             else {
-                count[word] += 1;
+                count[word]++;
 
                 for (let i = 0; i < sorted.length; i++) {
                     let rawVal = sorted[i].split("(")[0];
@@ -220,7 +220,7 @@ function getTenMostFrequentWords(txt) {
     });
 
     // sort in according to descending order
-    // if the two words are of equal length, we compare alphabetically
+    // if the two words are of equal frequency, we compare alphabetically
     sorted.sort( function(firstWord, secondWord) {
 
         // get the frequency in integer format
