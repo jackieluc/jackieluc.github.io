@@ -21,10 +21,6 @@ function isNotEmpty(str) {
  * @return an array of words converted to lowercase letters
 */
 function getWords(txt) {
-    // removes the apostrophes to ensure that any word with apostrophes is considered one word
-    while(txt.includes("'")) 
-        txt = txt.replace("'", "");
-    
     // RegEx - everything that is not alphanumeric
     let words = txt.split(/\W/);
     
@@ -67,7 +63,7 @@ function getLinesNumber(txt) {
     if (lines.length === 1)
         return 1;
     else
-        return lines.length - 1;
+        return lines.length;
 }
 
 /**
@@ -170,6 +166,7 @@ function getAllPalindromes(txt) {
 */
 function getTenLongestWords(txt) {
     let words = getWords(txt); 
+    let unique = [];
     
     // sort in according to descending order 
     // if the two words are of equal length, we compare alphabetically
@@ -177,15 +174,21 @@ function getTenLongestWords(txt) {
         return secondWord.length - firstWord.length || firstWord.localeCompare(secondWord);
     });
     
+    sorted.forEach( function(val) {
+        // add to array only if it is unique
+        if (!unique.includes(val))
+            unique.push(val);        
+    });
+    
     // return the 10 longest words
-    if (sorted.length >= 10)
-        return sorted.slice(0, 10);
+    if (unique.length >= 10)
+        return unique.slice(0, 10);
     else {
         let shortArray = [];
         
         // return the number of longest words up to 9
         // we don't care about empty strings
-        sorted.forEach( function(val) {
+        unique.forEach( function(val) {
             if (val !== "") 
                 shortArray.push(val);
         });
