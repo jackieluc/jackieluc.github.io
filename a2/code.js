@@ -8,6 +8,15 @@ function isAlphanumeric(str) {
 }
 
 /**
+ * @param str - some block of text
+ * @return boolean - based on whether the input parameter is whitespace or not
+*/
+function isNotEmpty(str) {
+    // RegEx - checks if the string input parameter is whitespace
+    return /\S/.test(str);
+}
+
+/**
  * @param txt - some block of text
  * @return an array of words converted to lowercase letters
 */
@@ -71,7 +80,7 @@ function getNonEmptyLinesNumber(txt) {
     
     // for each element in the array, we check if it is not whitespace and include it in the count if it is not
     lines.forEach( function(val) {
-        if (val !== "")
+        if (isNotEmpty(val))
             counter++;
     });
     return counter;
