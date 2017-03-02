@@ -11,15 +11,31 @@ http.listen( port, function () {
 
 app.use(express.static(__dirname + '/public'));
 
-// listen to 'chat' messages
+var connectedUsers = {};
+var anonymousNum = 0;
+
+function getRandomNickname() {
+    return "anonymous" + ++anonymousNum;
+}
+
 io.on('connection', function(socket){
 
-    // var address = socket.request.connection.remoteAddress;
+    var id = socket.id;
+    var nickname = getRandomNickname();
 
-    console.log(address + " connected!");
+    // send the connected user their username
+    // TODO: USE COOKIES TO KEEP THEIR USERNAME IF THEY DISCONNECT
+    console.log(id + " connected! Their random unique username is: " + nickname);
+    connectedUsers[id] = nickname;
+    socket.emit('nickname', nickname);
 
+    // broadcast the connected user to all other users
+    // TODO: IMPLEMENT "SHOW ONLINE USERS"
+    socket.broadcast.emit('connected-users', nickname);
+
+    // listen to 'chat' messages
     socket.on('chat', function(msg){
         moment.locale();
-	    io.emit('chat', moment().format('LT') + " " + msg);
+	    io.emit('chat', "[" + moment().format('LT') + "] " + nickname + ": " + msg);
     });
 });

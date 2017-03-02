@@ -14,6 +14,7 @@ $ git clone https://github.com/jackieluc/jackieluc.github.io.git
 $ cd jackieluc.github.io/a3/  
 $ npm install
 $ npm install moment
+$ npm install socket.io
 $ node index.js  
 listening on port 3000  
 
