@@ -11,29 +11,41 @@ http.listen( port, function () {
 
 app.use(express.static(__dirname + '/public'));
 
-var connectedUsers = {};
+var connectedUsers = [];
 var anonymousNum = 0;
 
 io.on('connection', function(socket){
 
     var id = socket.id;
     var nickname = getRandomNickname();
-    connectedUsers[id] = nickname;
+    connectedUsers.push({userid: id, usernickname: nickname});
 
     console.log("User connected - socket id: " + id + ", nickname: " + nickname);
 
     // send the connected user their username
-    // TODO: USE COOKIES TO KEEP THEIR USERNAME IF THEY DISCONNECT
     socket.emit('nickname', nickname);
 
-    // broadcast the connected user to all other users
-    // TODO: IMPLEMENT "SHOW ONLINE USERS"
-    socket.broadcast.emit('connected-users', nickname);
+    // broadcast the new connected user to all other online users
+    socket.broadcast.emit('new-user', {userid: id, usernickname: nickname});
+
+    // send the connected users to all connected user
+    socket.emit('connected-users', connectedUsers);
 
     // listen to 'chat' messages
     socket.on('chat', function(msg){
         moment.locale();
-	    io.emit('chat', "[" + moment().format('LT') + "] " + nickname + ": " + msg);
+        var entireMsg = "[" + moment().format('LT') + "] " + nickname + ": " + msg;
+	    io.emit('chat', entireMsg);
+    });
+
+    // listen to 'disconnect' messages
+    // TODO: USE COOKIES TO KEEP THEIR USERNAME IF THEY DISCONNECT
+    socket.on('disconnect', function() {
+        for(var i = 0; i < connectedUsers.size; i++) {
+            if (connectedUsers[i].userid === id)
+                connectedUsers[i].remove();
+        }
+        io.emit('disconnect', nickname);
     });
 });
 

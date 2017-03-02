@@ -1,4 +1,4 @@
-* { 
+* {
     margin: 0; 
     padding: 0; 
     box-sizing: border-box; 
@@ -51,6 +51,16 @@ form button {
     background: #eee;
 }
 
+#users {
+    list-style-type: none;
+    margin: 0;
+    padding-bottom: 50px;
+}
+
+#users li {
+    padding: 5px 10px;
+}
+
 #header {
     display: inline;
     width: 100%;
@@ -72,7 +82,7 @@ form button {
 
 table {
     width: 100%;
-    height: 100%;
+    height: 90%;
 }
 
 td {

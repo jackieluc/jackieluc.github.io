@@ -1,6 +1,6 @@
 // shorthand for $(document).ready(...)
 
-var connectedUsers = {};
+var connectedUsers = [];
 var nickname = "";
 
 $(function() {
@@ -22,5 +22,17 @@ $(function() {
 
         // TODO: FIX THIS SUCH THAT IT WILL ALIGN TO BOTTOM OF MESSAGES IN CHAT BOX FOR OVERFLOW
         // $('#test').scrollTop($('#messages')[0].scrollHeight);
+    });
+
+    socket.on('new-user', function(user) {
+       connectedUsers.push(user);
+       $('#users').append($('<li>').text(user.usernickname));
+    });
+
+    socket.on('connected-users', function(users) {
+        connectedUsers = users;
+        connectedUsers.forEach(function(user, index, connectedUsers) {
+            $('#users').append($('<li>').text(user.usernickname));
+        });
     });
 });
