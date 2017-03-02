@@ -18,6 +18,9 @@ $(function() {
     });
 
     socket.on('chat', function(msg) {
-	    $('#messages').append($('<li>').text(msg));
+        $('#messages').append($('<li>').text(msg));
+
+        // TODO: FIX THIS SUCH THAT IT WILL ALIGN TO BOTTOM OF MESSAGES IN CHAT BOX FOR OVERFLOW
+        // $('#test').scrollTop($('#messages')[0].scrollHeight);
     });
 });

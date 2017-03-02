@@ -14,19 +14,16 @@ app.use(express.static(__dirname + '/public'));
 var connectedUsers = {};
 var anonymousNum = 0;
 
-function getRandomNickname() {
-    return "anonymous" + ++anonymousNum;
-}
-
 io.on('connection', function(socket){
 
     var id = socket.id;
     var nickname = getRandomNickname();
+    connectedUsers[id] = nickname;
+
+    console.log("User connected - socket id: " + id + ", nickname: " + nickname);
 
     // send the connected user their username
     // TODO: USE COOKIES TO KEEP THEIR USERNAME IF THEY DISCONNECT
-    console.log(id + " connected! Their random unique username is: " + nickname);
-    connectedUsers[id] = nickname;
     socket.emit('nickname', nickname);
 
     // broadcast the connected user to all other users
@@ -39,3 +36,10 @@ io.on('connection', function(socket){
 	    io.emit('chat', "[" + moment().format('LT') + "] " + nickname + ": " + msg);
     });
 });
+
+/**
+ * @returns {string} a unique nickname
+ */
+function getRandomNickname() {
+    return "anonymous" + ++anonymousNum;
+}
