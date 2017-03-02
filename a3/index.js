@@ -41,10 +41,11 @@ io.on('connection', function(socket){
     // listen to 'disconnect' messages
     // TODO: USE COOKIES TO KEEP THEIR USERNAME IF THEY DISCONNECT
     socket.on('disconnect', function() {
-        for(var i = 0; i < connectedUsers.size; i++) {
-            if (connectedUsers[i].userid === id)
-                connectedUsers[i].remove();
-        }
+        connectedUsers = connectedUsers.filter(function (user) {
+            return user.usernickname !== this.nickname;
+        });
+
+        // TODO: remove the user from online list on the client side
         io.emit('disconnect', nickname);
     });
 });

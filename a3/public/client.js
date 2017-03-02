@@ -14,7 +14,7 @@ $(function() {
     });
 
     socket.on('nickname', function(nickname) {
-        $('#nickname').append($('<h3>').text("You are: " + nickname));
+        $('#nickname').text("You are: " + nickname);
     });
 
     socket.on('chat', function(msg) {

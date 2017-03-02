@@ -71,6 +71,8 @@ form button {
     height: 20px;
     text-align: left;
     float: left;
+    vertical-align: bottom;
+    margin-top: 20px;
 }
 
 #online-users-header {
@@ -78,6 +80,8 @@ form button {
     height: 20px;
     text-align: left;
     float: right;
+    vertical-align: bottom;
+    margin-top: 20px;
 }
 
 table {
