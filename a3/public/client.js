@@ -1,4 +1,6 @@
-// shorthand for $(document).ready(...)
+/**
+ * Author: Jackie Luc
+ */
 
 var connectedUsers = [];
 var nickname = "";
@@ -40,25 +42,32 @@ $(function() {
 
     $('form').submit(function() {
 
-        var msg = $('#m').val();
+        let msg = $('#m').val();
 
         // it is a command to change nickname or color
         // else it is a regular message
         if(checkCommand(msg))
             socket.emit('change-nickname', msg);
         else
-	        socket.emit('chat', msg);
+	        socket.emit('chat', { nickname : nickname, msg : msg });
 
 	    $('#m').val('');
 	    return false;
     });
 
     socket.on('nickname', function(nickname) {
+        this.nickname = nickname;
         $('#nickname').text("You are: " + nickname);
     });
 
-    socket.on('chat', function(msg) {
-        $('#messages').append($('<li>').text(msg));
+    socket.on('chat', function(chatData) {
+        let list = '<li>';
+
+        // if this is the same user who sent the message, bold it
+        if (this.nickname === chatData.nickname)
+            list = '<li class="sentMessages">';
+
+        $('#messages').append($(list).text(chatData.msg));
 
         // TODO: FIX THIS SUCH THAT IT WILL ALIGN TO BOTTOM OF MESSAGES IN CHAT BOX FOR OVERFLOW
         // $('#test').scrollTop($('#messages')[0].scrollHeight);
@@ -74,10 +83,6 @@ $(function() {
     });
 
     socket.on('error-changing-nickname', function(newNickname) {
-        // TODO: make this red
-        let errorMsg = $('<li class="error">').text("Sorry, someone already has the nickname \"" + newNickname + "\"");
-        errorMsg.style.color = "#FF0000";
-        $('#messages').append(errorMsg);
-        // $('.error').style.color = "#FF0000";
+        $('#messages').append($('<li class="error">').text("Sorry, someone already has the nickname \"" + newNickname + "\""));
     });
 });

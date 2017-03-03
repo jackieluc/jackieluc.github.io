@@ -1,3 +1,7 @@
+/**
+ * Author: Jackie Luc
+ */
+
 var express = require('express');
 var app = express();
 var http = require('http').createServer(app);
@@ -25,17 +29,23 @@ io.on('connection', function(socket){
     // send the connected user their username
     socket.emit('nickname', nickname);
 
-    // broadcast the new connected user to all other online users
-    socket.broadcast.emit('new-user', {id : id, nickname : nickname});
+    // broadcast the new connected user to all other connected users
+    socket.broadcast.emit('new-user', { id : id, nickname : nickname });
 
     // send the connected user all the connected users
     socket.emit('connected-users', connectedUsers);
 
     // listen to 'chat' messages
-    socket.on('chat', function(msg){
+    socket.on('chat', function(chatData){
         moment.locale();
-        let entireMsg = "[" + moment().format('LT') + "] " + nickname + ": " + msg;
-	    io.emit('chat', entireMsg);
+        let entireMsg = "[" + moment().format('LT') + "] " + nickname + ": " + chatData.msg;
+	    io.emit('chat', { nickname : nickname, msg : entireMsg });
+
+        // send bold message to the user that sent the message
+        // socket.emit('chat', boldMsg);
+
+        // send the message to all other connected users
+        // socket.broadcast.emit('chat', entireMsg);
     });
 
     // listen to 'change nickname' messages

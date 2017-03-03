@@ -1,7 +1,7 @@
 * {
-    margin: 0; 
-    padding: 0; 
-    box-sizing: border-box; 
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
 }
 
 html {
@@ -33,8 +33,15 @@ form button {
     width: 9%; 
     background: rgb(130, 224, 255); 
     border: none; 
-    padding: 10px; 
-    overflow: none;
+    padding: 10px;
+}
+
+.sentMessages {
+    font-weight: bold;
+}
+
+.error {
+    color: red;
 }
 
 #messages { 

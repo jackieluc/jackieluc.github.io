@@ -1,13 +1,12 @@
-# chat-example
+# SENG 513 - Online Chat Web Application
 
-This is the source code for a very simple chat example used for 
-the [Getting Started](http://socket.io/get-started/chat/) guide 
-of the Socket.IO website.
-
-Please refer to it to learn how to run this application.
+This source code is the extension of a very simple chat example
+used for the [Getting Started](http://socket.io/get-started/chat/)
+guide of the Socket.IO website.
 
 ___
 
+### Node version v6.10.0 (Windows) was used to develop this application
 
 ## How to run the server:
 $ git clone https://github.com/jackieluc/jackieluc.github.io.git  
