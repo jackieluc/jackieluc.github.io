@@ -40,17 +40,20 @@ io.on('connection', function(socket){
 
     // listen to 'change nickname' messages
     socket.on('change-nickname', function(msg) {
+        let newNickname = msg.substring(6);
         let success = updateNickname(id, msg);
 
         // update all connected users with the new nickname
         if(success) {
             // change nickname for the user
-            nickname = msg.substring(6);
+            nickname = newNickname;
             socket.emit('nickname', nickname);
 
             // send new list of connected users to everyone
             io.emit('connected-users', connectedUsers);
         }
+        else
+            socket.emit('error-changing-nickname', newNickname);
     });
 
     // listen to 'disconnect' messages

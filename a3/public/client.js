@@ -72,4 +72,12 @@ $(function() {
     socket.on('connected-users', function(users) {
         updateOnlineUsers(users);
     });
+
+    socket.on('error-changing-nickname', function(newNickname) {
+        // TODO: make this red
+        let errorMsg = $('<li class="error">').text("Sorry, someone already has the nickname \"" + newNickname + "\"");
+        errorMsg.style.color = "#FF0000";
+        $('#messages').append(errorMsg);
+        // $('.error').style.color = "#FF0000";
+    });
 });
