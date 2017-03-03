@@ -16,9 +16,9 @@ var anonymousNum = 0;
 
 io.on('connection', function(socket){
 
-    var id = socket.id;
-    var nickname = getRandomNickname();
-    connectedUsers.push({userid: id, usernickname: nickname});
+    let id = socket.id;
+    let nickname = getUniqueNickname();
+    connectedUsers.push({id : id, nickname : nickname});
 
     console.log("User connected - socket id: " + id + ", nickname: " + nickname);
 
@@ -26,23 +26,38 @@ io.on('connection', function(socket){
     socket.emit('nickname', nickname);
 
     // broadcast the new connected user to all other online users
-    socket.broadcast.emit('new-user', {userid: id, usernickname: nickname});
+    socket.broadcast.emit('new-user', {id : id, nickname : nickname});
 
-    // send the connected users to all connected user
+    // send the connected user all the connected users
     socket.emit('connected-users', connectedUsers);
 
     // listen to 'chat' messages
     socket.on('chat', function(msg){
         moment.locale();
-        var entireMsg = "[" + moment().format('LT') + "] " + nickname + ": " + msg;
+        let entireMsg = "[" + moment().format('LT') + "] " + nickname + ": " + msg;
 	    io.emit('chat', entireMsg);
+    });
+
+    // listen to 'change nickname' messages
+    socket.on('change-nickname', function(msg) {
+        let success = updateNickname(id, msg);
+
+        // update all connected users with the new nickname
+        if(success) {
+            // change nickname for the user
+            nickname = msg.substring(6);
+            socket.emit('nickname', nickname);
+
+            // send new list of connected users to everyone
+            io.emit('connected-users', connectedUsers);
+        }
     });
 
     // listen to 'disconnect' messages
     // TODO: USE COOKIES TO KEEP THEIR USERNAME IF THEY DISCONNECT
     socket.on('disconnect', function() {
         connectedUsers = connectedUsers.filter(function (user) {
-            return user.usernickname !== this.nickname;
+            return user.nickname !== this.nickname;
         });
 
         // TODO: remove the user from online list on the client side
@@ -53,6 +68,59 @@ io.on('connection', function(socket){
 /**
  * @returns {string} a unique nickname
  */
-function getRandomNickname() {
+function getUniqueNickname() {
     return "anonymous" + ++anonymousNum;
 }
+
+/**
+ * helper function that checks if a user currently has the requested username
+ * @param newNickname
+ * @returns {boolean}
+ */
+function checkDuplicate(newNickname) {
+    // NOTE: used traditional for-loop because you cannot break out of a forEach loop
+    for(let i = 0; i < connectedUsers.length; i++) {
+        if (connectedUsers[i].nickname === newNickname)
+            return true;
+    }
+
+    return false;
+}
+
+/**
+ * helper function that replaces the current user's nickname with a new nickname
+ * @param id
+ * @param newNickname
+ */
+function replaceNickname(id, newNickname) {
+    connectedUsers.forEach(function(user) {
+        if (user.id === id)
+            user.nickname = newNickname;
+    });
+}
+
+/**
+ *
+ * @param msg
+ * @returns {boolean}
+ */
+function updateNickname(id, msg) {
+
+    // the msg contains a command to change color or nickname
+    if (msg.startsWith("/nickcolor ")) {
+        var newColor = msg.substring(10);
+        // TODO: change the color of the msg
+    }
+    else if (msg.startsWith("/nick ")) {
+
+        let newNickname = msg.substring(6);
+        let duplicate = checkDuplicate(newNickname);
+
+        if(duplicate)
+            return false;
+        else
+            replaceNickname(id, newNickname);
+    }
+
+    return true;
+};

@@ -3,12 +3,52 @@
 var connectedUsers = [];
 var nickname = "";
 
+
+/**
+ *
+ * @param msg
+ * @returns {boolean}
+ */
+function checkCommand(msg) {
+
+    // if the command does not exist in the message, return false
+    if (msg.startsWith("/nick ") || msg.startsWith("/nickcolor "))
+        return true;
+
+    return false;
+};
+
+/**
+ *
+ * @param users
+ */
+function updateOnlineUsers(users) {
+    connectedUsers = users;
+
+    // clear current list
+    $('#users').empty();
+
+    // update the current list
+    connectedUsers.forEach(function (user) {
+        $('#users').append($('<li>').text(user.nickname));
+    });
+};
+
 $(function() {
 
     var socket = io();
 
     $('form').submit(function() {
-	    socket.emit('chat', $('#m').val());
+
+        var msg = $('#m').val();
+
+        // it is a command to change nickname or color
+        // else it is a regular message
+        if(checkCommand(msg))
+            socket.emit('change-nickname', msg);
+        else
+	        socket.emit('chat', msg);
+
 	    $('#m').val('');
 	    return false;
     });
@@ -26,13 +66,10 @@ $(function() {
 
     socket.on('new-user', function(user) {
        connectedUsers.push(user);
-       $('#users').append($('<li>').text(user.usernickname));
+       $('#users').append($('<li>').text(user.nickname));
     });
 
     socket.on('connected-users', function(users) {
-        connectedUsers = users;
-        connectedUsers.forEach(function(user, index, connectedUsers) {
-            $('#users').append($('<li>').text(user.usernickname));
-        });
+        updateOnlineUsers(users);
     });
 });
