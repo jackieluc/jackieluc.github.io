@@ -22,9 +22,10 @@ io.on('connection', function(socket){
 
     let id = socket.id;
     let nickname = getUniqueNickname();
-    connectedUsers.push({id : id, nickname : nickname});
+    let color = "#000000";
+    connectedUsers.push({ id : id, nickname : nickname, color: color });
 
-    console.log("User connected - socket id: " + id + ", nickname: " + nickname);
+    console.log("User connected - socket id: " + id + ", nickname: " + nickname + ", color: " + color);
 
     // send the connected user their username
     socket.emit('nickname', nickname);
@@ -38,20 +39,13 @@ io.on('connection', function(socket){
     // listen to 'chat' messages
     socket.on('chat', function(chatData){
         moment.locale();
-        let entireMsg = "[" + moment().format('LT') + "] " + nickname + ": " + chatData.msg;
-	    io.emit('chat', { nickname : nickname, msg : entireMsg });
-
-        // send bold message to the user that sent the message
-        // socket.emit('chat', boldMsg);
-
-        // send the message to all other connected users
-        // socket.broadcast.emit('chat', entireMsg);
+	    io.emit('chat', { time: moment().format('LT'), nickname : nickname, color: color, msg : chatData.msg });
     });
 
-    // listen to 'change nickname' messages
+    // listen to 'change nickname' commands
     socket.on('change-nickname', function(msg) {
-        let newNickname = msg.substring(6);
-        let success = updateNickname(id, msg);
+        let newNickname = msg;
+        let success = changeNickname(id, newNickname);
 
         // update all connected users with the new nickname
         if(success) {
@@ -64,6 +58,14 @@ io.on('connection', function(socket){
         }
         else
             socket.emit('error-changing-nickname', newNickname);
+    });
+
+    // listen to 'change color' commands
+    socket.on('change-color', function(msg) {
+        let newColor = "#" + msg;
+        color = newColor;
+        changeColor(id, newColor);
+        socket.emit('change-color', newColor);
     });
 
     // listen to 'disconnect' messages
@@ -114,26 +116,31 @@ function replaceNickname(id, newNickname) {
 
 /**
  *
- * @param msg
+ * @param id
+ * @param newNickname
  * @returns {boolean}
  */
-function updateNickname(id, msg) {
+function changeNickname(id, newNickname) {
+    let duplicate = checkDuplicate(newNickname);
 
-    // the msg contains a command to change color or nickname
-    if (msg.startsWith("/nickcolor ")) {
-        var newColor = msg.substring(10);
-        // TODO: change the color of the msg
-    }
-    else if (msg.startsWith("/nick ")) {
-
-        let newNickname = msg.substring(6);
-        let duplicate = checkDuplicate(newNickname);
-
-        if(duplicate)
-            return false;
-        else
-            replaceNickname(id, newNickname);
-    }
+    if(duplicate)
+        return false;
+    else
+        replaceNickname(id, newNickname);
 
     return true;
+};
+
+/**
+ *
+ * @param id
+ * @param newNickname
+ */
+function changeColor(id, newColor) {
+    for(let i = 0; i < connectedUsers.length; i++) {
+        if (connectedUsers[i].id === id) {
+            connectedUsers[i].color = newColor;
+            break;
+        }
+    }
 };

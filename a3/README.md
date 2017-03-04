@@ -14,8 +14,8 @@ $ cd jackieluc.github.io/a3/
 $ npm install
 $ npm install moment
 $ npm install socket.io
-$ node index.js  
-listening on port 3000  
+$ node index.js
+listening on port 3000
 
 ___
 

@@ -40,10 +40,6 @@ form button {
     font-weight: bold;
 }
 
-.error {
-    color: red;
-}
-
 #messages { 
     list-style-type: none; 
     margin: 0; 
