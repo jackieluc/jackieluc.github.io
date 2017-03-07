@@ -18,16 +18,16 @@ $(function() {
         if(changeNickname(msg))
             socket.emit('change-nickname', msg.substring(6));
         else if (changeColor(msg))
-            socket.emit('change-color', msg.substring(11));
+            socket.emit('change-color', msg.substring(11, 17));
         else
-	        socket.emit('chat', { msg : msg });
+	        socket.emit('chat', { nickname : nickname, msg : msg });
 
 	    $('#m').val('');
 	    return false;
     });
 
-    socket.on('nickname', function(nickname) {
-        this.nickname = nickname;
+    socket.on('nickname', function(nick) {
+        nickname = nick;
         $('#nickname').text("You are: " + nickname);
     });
 
@@ -111,16 +111,16 @@ function updateOnlineUsers(users) {
  */
 function addToChat(chatData) {
     let time = chatData.time;
-    let nickname = chatData.nickname;
+    let nick = chatData.nickname;
     let color = chatData.color;
     let msg = chatData.msg;
     let list = '<li>';
 
     // if this is the same user who sent the message, bold it
-    if (this.nickname === nickname)
+    if (nickname === nick)
         list = '<li class="sentMessages">';
 
-    $('#messages').append($(list).html("[" + time + "] <span style=\"color:" + color + "\">" + nickname + "</span>: " + msg));
+    $('#messages').append($(list).html("[" + time + "] <span style=\"color:" + color + "\">" + nick + "</span>: " + msg));
 }
 
 /**

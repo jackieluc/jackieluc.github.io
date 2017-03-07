@@ -22,18 +22,15 @@ var chatLog = [];
 io.on('connection', function(socket){
 
     // initialize default values and store in array
-    let id = socket.id;
     let nickname = getUniqueNickname();
     let color = "#000000";
-    connectedUsers.push({ id : id, nickname : nickname, color: color });
+    let cookie = getRandomCookie();
+    connectedUsers.push({ nickname : nickname, color: color, cookie : cookie });
 
-    console.log("User connected - socket id: " + id + ", nickname: " + nickname + ", color: " + color);
+    console.log("User connected - socket id: " + socket.id + ", nickname: " + nickname + ", color: " + color + ", cookie: " + cookie);
 
     // send the connected user their username
     socket.emit('nickname', nickname);
-
-    // broadcast the new connected user to all other connected users
-    socket.broadcast.emit('new-user', { id : id, nickname : nickname });
 
     // send the connected user all the connected users
     socket.emit('connected-users', connectedUsers);
@@ -41,11 +38,16 @@ io.on('connection', function(socket){
     // send the connected user the last 200 messages in the chat
     socket.emit('chat-log', chatLog);
 
+    // send the connected user a unique cookie
+    socket.emit('cookie', cookie);
+
+    // broadcast the new connected user to all other connected users
+    socket.broadcast.emit('new-user', { nickname : nickname });
+
     // listen to 'chat' messages
     socket.on('chat', function(chatData){
         moment.locale();
-        let msgObject = { time: moment().format('LT'), nickname : nickname, color: color, msg : chatData.msg };
-
+        let msgObject = { time : moment().format('LT'), nickname : chatData.nickname, color: color, msg : chatData.msg };
         // store in chat log and also send to all connected users
         updateChatLog(msgObject);
 	    io.emit('chat', msgObject);
@@ -54,13 +56,12 @@ io.on('connection', function(socket){
     // listen to 'change nickname' commands
     socket.on('change-nickname', function(msg) {
         let newNickname = msg;
-        let success = changeNickname(id, newNickname);
+        let success = changeNickname(nickname, newNickname);
 
         // update all connected users with the new nickname
         if(success) {
             // change nickname for the user
-            nickname = newNickname;
-            socket.emit('nickname', nickname);
+            socket.emit('nickname', newNickname);
 
             // send new list of connected users to everyone
             io.emit('connected-users', connectedUsers);
@@ -73,8 +74,8 @@ io.on('connection', function(socket){
     socket.on('change-color', function(msg) {
         let newColor = "#" + msg;
         color = newColor;
-        changeColor(id, newColor);
-        socket.emit('change-color', newColor);
+        changeColor(nickname, color);
+        socket.emit('change-color', color);
     });
 
     // listen to 'disconnect' messages
@@ -97,6 +98,14 @@ function getUniqueNickname() {
 }
 
 /**
+ * some random number
+ * @returns {number}
+ */
+function getRandomCookie() {
+    return Math.random();
+}
+
+/**
  * helper function that checks if a user currently has the requested username
  * @param newNickname
  * @returns {boolean}
@@ -116,10 +125,12 @@ function checkDuplicate(newNickname) {
  * @param id
  * @param newNickname
  */
-function replaceNickname(id, newNickname) {
+function replaceNickname(oldNickname, newNickname) {
     connectedUsers.forEach(function(user) {
-        if (user.id === id)
+        if (user.nickname === oldNickname) {
             user.nickname = newNickname;
+            console.log("Changing old nickname: " + oldNickname + " to new nickname: " + user.nickname);
+        }
     });
 }
 
@@ -129,13 +140,13 @@ function replaceNickname(id, newNickname) {
  * @param newNickname
  * @returns {boolean}
  */
-function changeNickname(id, newNickname) {
+function changeNickname(oldNickname, newNickname) {
     let duplicate = checkDuplicate(newNickname);
 
     if(duplicate)
         return false;
     else
-        replaceNickname(id, newNickname);
+        replaceNickname(oldNickname, newNickname);
 
     return true;
 };
@@ -145,9 +156,9 @@ function changeNickname(id, newNickname) {
  * @param id
  * @param newNickname
  */
-function changeColor(id, newColor) {
+function changeColor(nickname, newColor) {
     for(let i = 0; i < connectedUsers.length; i++) {
-        if (connectedUsers[i].id === id) {
+        if (connectedUsers[i].nickname === nickname) {
             connectedUsers[i].color = newColor;
             break;
         }
