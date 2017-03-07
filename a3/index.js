@@ -17,9 +17,11 @@ app.use(express.static(__dirname + '/public'));
 
 var connectedUsers = [];
 var anonymousNum = 0;
+var chatLog = [];
 
 io.on('connection', function(socket){
 
+    // initialize default values and store in array
     let id = socket.id;
     let nickname = getUniqueNickname();
     let color = "#000000";
@@ -36,10 +38,17 @@ io.on('connection', function(socket){
     // send the connected user all the connected users
     socket.emit('connected-users', connectedUsers);
 
+    // send the connected user the last 200 messages in the chat
+    socket.emit('chat-log', chatLog);
+
     // listen to 'chat' messages
     socket.on('chat', function(chatData){
         moment.locale();
-	    io.emit('chat', { time: moment().format('LT'), nickname : nickname, color: color, msg : chatData.msg });
+        let msgObject = { time: moment().format('LT'), nickname : nickname, color: color, msg : chatData.msg };
+
+        // store in chat log and also send to all connected users
+        updateChatLog(msgObject);
+	    io.emit('chat', msgObject);
     });
 
     // listen to 'change nickname' commands
@@ -115,7 +124,7 @@ function replaceNickname(id, newNickname) {
 }
 
 /**
- *
+ * helper function to change and replace the nickname
  * @param id
  * @param newNickname
  * @returns {boolean}
@@ -132,7 +141,7 @@ function changeNickname(id, newNickname) {
 };
 
 /**
- *
+ * helper function that changes the color in the connectedUsers array
  * @param id
  * @param newNickname
  */
@@ -144,3 +153,17 @@ function changeColor(id, newColor) {
         }
     }
 };
+
+/**
+ * helper function that updates the chat log by removing the oldest message
+ * and appends a new message if the chat log is full
+ * @param msgObject
+ */
+function updateChatLog(msgObject) {
+    chatLog.push(msgObject);
+
+    // we remove the first element if the chat log is more than 200
+    if (chatLog.length > 200) {
+        chatLog.shift();
+    }
+}
