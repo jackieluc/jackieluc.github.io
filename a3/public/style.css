@@ -42,8 +42,7 @@ form button {
 
 #messages { 
     list-style-type: none; 
-    margin: 0; 
-    padding-bottom: 50px; 
+    margin: 0;  
 }
 
 #messages li { 
@@ -57,7 +56,7 @@ form button {
 #users {
     list-style-type: none;
     margin: 0;
-    padding-bottom: 50px;
+/*    padding-bottom: 50px;*/
 }
 
 #users li {
@@ -93,22 +92,23 @@ table {
 }
 
 td {
-    padding-bottom: 7px;
+    padding-bottom: 3px;
 }
 
 #chat, #online-users {
     background-color: #ccc;
-    vertical-align: bottom;    
 }
 
 #chat {
-    width: 80%;
-    overflow: auto;
-/*    position: absolute;*/
+    width: 100%;
+    height: 100%;
+    overflow-y: auto;
 }
 
 #online-users {
-    width: 20%;
+    width: 100%;
+    height: 100%;
+    overflow-y: auto;
 }
 
 @media (max-width: 500px) {

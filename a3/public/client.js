@@ -8,6 +8,7 @@ var nickname = "";
 $(function() {
 
     var socket = io();
+    // socket.emit('request-cookie', document.cookie);
 
     $('form').submit(function() {
 
@@ -31,24 +32,37 @@ $(function() {
         $('#nickname').text("You are: " + nickname);
     });
 
+    // socket.on('cookie', function(cookie) {
+    //    document.cookie = cookie;
+    // });
+
     socket.on('chat-log', function(chatLog) {
         updateChat(chatLog);
+
+        // if there is overflow, scroll to the bottom of the chat box
+        $('#chat').scrollTop($('#messages')[0].scrollHeight);
     });
 
     socket.on('chat', function(chatData) {
         addToChat(chatData);
 
-        // TODO: FIX THIS SUCH THAT IT WILL ALIGN TO BOTTOM OF MESSAGES IN CHAT BOX FOR OVERFLOW
-        // $('#test').scrollTop($('#messages')[0].scrollHeight);
+        // if there is overflow, scroll to the bottom of the chat box
+        $('#chat').scrollTop($('#messages')[0].scrollHeight);
     });
 
     socket.on('new-user', function(user) {
        connectedUsers.push(user);
        $('#users').append($('<li>').text(user.nickname));
+
+        // if there is overflow, scroll to the bottom of the online user list
+        $('#online-users').scrollTop($('#users')[0].scrollHeight);
     });
 
     socket.on('connected-users', function(users) {
         updateOnlineUsers(users);
+
+        // if there is overflow, scroll to the bottom of the online user list
+        $('#online-users').scrollTop($('#users')[0].scrollHeight);
     });
 
     socket.on('error-changing-nickname', function(newNickname) {
