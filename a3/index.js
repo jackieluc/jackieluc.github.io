@@ -135,11 +135,10 @@ io.on('connection', function(socket){
     // TODO: USE COOKIES TO KEEP THEIR USERNAME IF THEY DISCONNECT
     socket.on('disconnect', function() {
         connectedUsers = connectedUsers.filter(function (user) {
-            return user.nickname !== this.nickname;
+            return user.nickname !== nickname;
         });
 
-        // TODO: remove the user from online list on the client side
-        io.emit('disconnect', nickname);
+        io.emit('connected-users', connectedUsers);
     });
 });
 
