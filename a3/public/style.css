@@ -4,6 +4,10 @@
     box-sizing: border-box;
 }
 
+*:focus {
+    outline: none;
+}
+
 html {
     height: 100%;
 }
@@ -14,26 +18,31 @@ body {
     overflow: hidden;
 }
 
-form { 
-    background: #000; 
-    padding: 3px; 
+form {   
     position: fixed; 
     bottom: 0; 
     width: 100%; 
+    background-color: #88BBD6;
+    border-radius: 30px;
 }
 
 form input { 
-    border: 0; 
-    padding: 11px; 
+    border-style: none; 
+    padding: 10px; 
     width: 90%; 
-    margin-right: .5%; 
+    background-color: #88BBD6;
+    border-radius: 30px;
+    
 }
 
 form button { 
     width: 9%; 
-    background: rgb(130, 224, 255); 
+    background-color: #336691;
+    color: white;
     border: none; 
-    padding: 10px;
+    padding: 11px;
+    border-radius: 20px;
+    float: right;
 }
 
 .sentMessages {
@@ -46,17 +55,18 @@ form button {
 }
 
 #messages li { 
-    padding: 5px 10px;
+    padding: 5px 30px;
 }
 
+/*
 #messages li:nth-child(odd) { 
-    background: #eee;
+    background: #57BC90;
 }
+*/
 
 #users {
     list-style-type: none;
     margin: 0;
-/*    padding-bottom: 50px;*/
 }
 
 #users li {
@@ -69,18 +79,19 @@ form button {
 }
 
 #nickname {
-    width: 80%;
+    width: 60%;
     height: 20px;
     text-align: left;
     float: left;
     vertical-align: bottom;
     margin-top: 20px;
+    margin-left: 30px;
 }
 
 #online-users-header {
     width: 20%;
     height: 20px;
-    text-align: left;
+    text-align: center;
     float: right;
     vertical-align: bottom;
     margin-top: 20px;
@@ -92,50 +103,79 @@ table {
 }
 
 td {
-    padding-bottom: 3px;
+    padding-bottom: 6px;
 }
 
 #chat, #online-users {
-    background-color: #ccc;
+    border-radius: 30px;
+}
+
+#chat-td {
+    width: 80%;
+    padding: 0 10px;
 }
 
 #chat {
     width: 100%;
     height: 100%;
     overflow-y: auto;
+    background-color: lightskyblue;
+}
+
+#online-td {
+    width: 20%;
+    padding: 0 10px;
 }
 
 #online-users {
     width: 100%;
     height: 100%;
     overflow-y: auto;
+    overflow-x: hidden;
+    background-color: lightskyblue;
+    text-align: center;
 }
 
-@media (max-width: 500px) {
+@media (max-width: 991px) {
     body {
         font-size: 11px;
     }
-    
     form button {
-        width: 19%;
+        width: 13%;
         padding: 12px;
         font-size: 11px;
+        float: right;
     }
-    
     form input {
         width: 80%;
         margin-right: .5%;
     }
+    #chat-td {
+        padding: 0 5px;
+    }
+    #online-td {
+        padding: 0 5px;
+    }
 }
 
-@media (max-width: 300px) {
-     form input {
+@media (max-width: 400px) {
+    body {
+        font-size: 8px;
+    }
+    form input {
         width: 80%;
         margin-right: 1%;
     }   
     form button {
         width: 19%;
         padding: 12px;
-        font-size: 10px;
+        font-size: 8px;
+        float: right;
+    }
+        #chat-td {
+        padding: 0;
+    }
+    #online-td {
+        padding: 0;
     }
 }

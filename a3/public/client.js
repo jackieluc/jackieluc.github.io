@@ -67,11 +67,17 @@ $(function() {
 
     socket.on('error-changing-nickname', function(newNickname) {
         $('#messages').append($('<li>').html("<span style=\"color: red\">Sorry, someone already has the nickname \"" + newNickname + "\"</span>"));
+
+        // if there is overflow, scroll to the bottom of the chat box
+        $('#chat').scrollTop($('#messages')[0].scrollHeight);
     });
 
     socket.on('change-color', function(color) {
         this.color = color;
         $('#messages').append($('<li>').html("<span style=\"color: " + color + "\">Your nickname color has been changed."));
+
+        // if there is overflow, scroll to the bottom of the chat box
+        $('#chat').scrollTop($('#messages')[0].scrollHeight);
     });
 });
 
