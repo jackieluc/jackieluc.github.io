@@ -178,4 +178,11 @@ td {
     #online-td {
         padding: 0;
     }
+    #nickname {
+        width: 30%;
+    }
+    #online-users-header {
+        text-align: left;
+        width: 30%;
+    }
 }
