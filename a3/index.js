@@ -110,11 +110,12 @@ io.on('connection', function(socket){
 
         // update all connected users with the new nickname
         if(success) {
+            nickname = newNickname
             // send the new nickname to the user
-            socket.emit('nickname', newNickname);
+            socket.emit('nickname', nickname);
 
             // send the updated cookie to the user
-            socket.emit('cookie', getCookie(newNickname));
+            // socket.emit('cookie', getCookie(nickname));
 
             // send new list of connected users to everyone
             io.emit('connected-users', connectedUsers);
