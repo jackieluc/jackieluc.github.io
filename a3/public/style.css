@@ -12,34 +12,33 @@ html {
     height: 100%;
 }
 
-body { 
+body {
     font: 13px Helvetica, Arial;
     height: 100%;
     overflow: hidden;
 }
 
-form {   
-    position: fixed; 
-    bottom: 0; 
-    width: 100%; 
+form {
+    position: fixed;
+    bottom: 0;
+    width: 100%;
     background-color: #88BBD6;
     border-radius: 30px;
 }
 
-form input { 
-    border-style: none; 
-    padding: 10px; 
-    width: 90%; 
+form input {
+    border-style: none;
+    padding: 10px;
+    width: 90%;
     background-color: #88BBD6;
     border-radius: 30px;
-    
 }
 
-form button { 
-    width: 9%; 
+form button {
+    width: 9%;
     background-color: #336691;
     color: white;
-    border: none; 
+    border: none;
     padding: 11px;
     border-radius: 20px;
     float: right;
@@ -49,19 +48,18 @@ form button {
     font-weight: bold;
 }
 
-#messages { 
-    list-style-type: none; 
+#messages {
+    list-style-type: none;
     margin: 0;
-    vertical-align: bottom;
-
 }
 
-#messages li { 
+#messages li {
     padding: 5px 30px;
+    bottom: 0;
 }
 
 /*
-#messages li:nth-child(odd) { 
+#messages li:nth-child(odd) {
     background: #57BC90;
 }
 */
@@ -69,6 +67,7 @@ form button {
 #users {
     list-style-type: none;
     margin: 0;
+    vertical-align: bottom;
 }
 
 #users li {
@@ -110,6 +109,8 @@ td {
 
 #chat, #online-users {
     border-radius: 30px;
+    display: flex;
+    flex-direction: column-reverse;
 }
 
 #chat-td {
@@ -167,7 +168,7 @@ td {
     form input {
         width: 80%;
         margin-right: 1%;
-    }   
+    }
     form button {
         width: 19%;
         padding: 12px;
