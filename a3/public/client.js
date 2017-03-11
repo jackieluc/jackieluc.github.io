@@ -4,11 +4,11 @@
 
 var connectedUsers = [];
 var nickname = "";
+var color = "";
 
 $(function() {
 
     var socket = io();
-    // socket.emit('request-cookie', document.cookie);
 
     $('form').submit(function() {
 
@@ -27,14 +27,13 @@ $(function() {
 	    return false;
     });
 
-    socket.on('nickname', function(nick) {
-        nickname = nick;
+    socket.on('nickname', function(user) {
+        nickname = user.nickname;
         $('#nickname').text("You are: " + nickname);
-    });
 
-    // socket.on('cookie', function(cookie) {
-    //    document.cookie = cookie;
-    // });
+        // update cookie
+        document.cookie = "nickname=" + nickname + ";color=" + user.color + ";max-age=" + 60*5*1000 + ";";
+    });
 
     socket.on('chat-log', function(chatLog) {
         updateChat(chatLog);
@@ -72,12 +71,15 @@ $(function() {
         $('#chat').scrollTop($('#messages')[0].scrollHeight);
     });
 
-    socket.on('change-color', function(color) {
-        this.color = color;
+    socket.on('change-color', function(user) {
+        color = user.color;
         $('#messages').append($('<li>').html("<span style=\"color: " + color + "\">Your nickname color has been changed."));
 
         // if there is overflow, scroll to the bottom of the chat box
         $('#chat').scrollTop($('#messages')[0].scrollHeight);
+
+        // update cookie
+        document.cookie = "nickname=" + nickname + ";color=" + user.color + ";max-age=" + 60*5*1000 + ";";
     });
 });
 

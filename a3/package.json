@@ -3,7 +3,6 @@
   "version": "0.0.3",
   "description": "First Socket.io app b y Jackie Luc",
   "dependencies": {
-    "cookie-parser": "^1.4.3",
     "express": "^4.14.1",
     "socket.io": "^1.7.3"
   },
